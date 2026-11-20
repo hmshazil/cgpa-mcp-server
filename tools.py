@@ -1,4 +1,5 @@
 from typing import Optional
+from server import mcp
 
 GRADE_BANDS = [
     (85, 100, 4.0),
@@ -76,6 +77,7 @@ COURSES = {
 TOTAL_PROGRAM_CREDIT_HOURS = 134.0
 
 
+@mcp.tool
 def marks_to_grade_points(marks: int) -> float | str:
     """Convert obtained marks (0-100) in one course to a grade point using the
     PUCIT grade band table. Use this before calculating any GPA whenever the
@@ -90,6 +92,7 @@ def marks_to_grade_points(marks: int) -> float | str:
     return "Error: could not map marks to a grade point"
 
 
+@mcp.tool
 def calculate_semester_gpa(grade_points: list[float], credit_hours: list[float]) -> float | str:
     """Calculate one semester's credit-hour-weighted GPA from a list of grade
     points and the matching list of credit hours (same order, same length).
@@ -106,6 +109,7 @@ def calculate_semester_gpa(grade_points: list[float], credit_hours: list[float])
     return round(weighted_sum / total_ch, 3)
 
 
+@mcp.tool
 def calculate_new_cgpa(
     current_cgpa: Optional[float] = None,
     completed_credit_hours: Optional[float] = None,
@@ -140,6 +144,7 @@ def calculate_new_cgpa(
     return round(numerator / denominator, 3)
 
 
+@mcp.tool
 def required_gpa_for_target(
     target_cgpa: Optional[float] = None,
     current_cgpa: Optional[float] = None,
@@ -178,6 +183,7 @@ def required_gpa_for_target(
     return round(numerator / remaining_credit_hours, 3)
 
 
+@mcp.tool
 def get_semester_courses(semester: int) -> str:
     """Return the list of courses and their credit hours for a given semester
     (1-8) of the PUCIT BS(CS) scheme of studies. Use this whenever you need to
@@ -191,6 +197,7 @@ def get_semester_courses(semester: int) -> str:
     return "\n".join(lines)
 
 
+@mcp.tool
 def get_remaining_credit_hours(current_semester: int) -> float | str:
     """Total the graded credit hours remaining from the semester AFTER
     current_semester through semester 8 (inclusive). Use this to find out how
@@ -205,6 +212,7 @@ def get_remaining_credit_hours(current_semester: int) -> float | str:
     return round(remaining, 1)
 
 
+@mcp.tool
 def save_report(filename: str, content: str) -> str:
     """Save a text report (e.g. a semester GPA result, a projected CGPA, or a
     plan for reaching a target CGPA) to a file. Only call this after you have
